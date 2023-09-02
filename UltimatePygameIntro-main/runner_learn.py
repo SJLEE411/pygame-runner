@@ -15,10 +15,14 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom = (80, 300))
         self.gravity = 0
 
+        self.jump_sound = pygame.mixer.Sound('audio/jump.mp3')
+        self.jump_sound.set_volume(0.3)
+
     def player_input(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE] and self.rect.bottom >= 300:
             self.gravity = -20
+            self.jump_sound.play()
     
     def apply_gravity(self):
         self.gravity += 1
@@ -56,7 +60,7 @@ class Obstacle(pygame.sprite.Sprite):
 
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
-        self.rect = self.image.get_rect(midbottom = (randint(900,1100),y_pos))
+        self.rect = self.image.get_rect(midbottom = (randint(800,1100),y_pos))
 
     def animation_state(self):
         self.animation_index += 0.1
@@ -121,6 +125,9 @@ test_font = pygame.font.Font('font/Pixeltype.ttf', 50)
 game_active = False
 start_time = 0
 score = 0
+bg_Music = pygame.mixer.Sound('audio/music.wav')
+bg_Music.play(loops = -1)
+bg_Music.set_volume(0.3)
 
 player = pygame.sprite.GroupSingle()
 player.add(Player())
